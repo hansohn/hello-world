@@ -23,11 +23,12 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
+name: Deploy to Amazon ECS
+
 on:
   release:
-    types: [created]
-
-name: Deploy to Amazon ECS
+    types:
+      - created
 
 jobs:
   deploy:
@@ -44,7 +45,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-2
+        aws-region: ${{ secrets.AWS_REGION }}
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -54,7 +55,7 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: my-ecr-repo
+        ECR_REPOSITORY: helloworld
         IMAGE_TAG: ${{ github.sha }}
       run: |
         # Build a docker container and
@@ -68,14 +69,14 @@ jobs:
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: task-definition.json
-        container-name: sample-app
+        task-definition: task-fargate.json
+        container-name: helloworld
         image: ${{ steps.build-image.outputs.image }}
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: sample-app-service
+        service: hansohn-test-helloworld
         cluster: default
         wait-for-service-stability: true
