@@ -5,7 +5,7 @@
   "inferenceAccelerators": [],
   "containerDefinitions": [
     {
-      "name": "helloworld",
+      "name": "hansohn-test-helloworld",
       "image": "965345602646.dkr.ecr.us-west-2.amazonaws.com/helloworld:latest",
       "resourceRequirements": null,
       "essential": true,
