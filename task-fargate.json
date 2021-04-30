@@ -1,0 +1,28 @@
+{
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "inferenceAccelerators": [],
+  "containerDefinitions": [
+    {
+      "name": "helloworld",
+      "image": "965345602646.dkr.ecr.us-west-2.amazonaws.com/helloworld:latest",
+      "resourceRequirements": null,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": "80",
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ],
+  "volumes": [],
+  "networkMode": "awsvpc",
+  "memory": "512",
+  "cpu": "256",
+  "executionRoleArn": "arn:aws:iam::965345602646:role/hansohn-test-helloworld-exec",
+  "family": "hansohn-test-helloworld",
+  "taskRoleArn": "",
+  "placementConstraints": []
+}
